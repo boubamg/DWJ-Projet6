@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/boubamg/DWJ-Projet6/issues"
   },
-  "homepage": "https://github.com/boubamg/DWJ-Projet6#readme"
+  "homepage": "https://github.com/boubamg/DWJ-Projet6#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
