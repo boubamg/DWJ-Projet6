@@ -47,8 +47,22 @@ app.post('/api/sauces', (req, res) => {
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     sauce.save()
-    .then(() => res.status(201).json({ message: 'Sauce ajoutée'}))
+    .then(() => res.status(201).json({ message: 'La Sauce a bien été ajoutée'}))
     .catch(err => res.status(400).json({err}));
+});
+
+app.put('/api/sauces/:id', (req, res) => {
+    const sauceParsed = JSON.parse(req.body.sauce);
+
+    Sauce.updateOne({_id : req.params.id}, {...sauceParsed, _id: req.params.id})
+    .then(() => res.status(200).json({ message: 'La Sauce a bien été modifiée' }))
+    .catch(err => res.status(404).json({ err }));
+});
+
+app.delete('/api/stuff/:id', (req, res) => {
+    Sauce.deleteOne({ _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'La Sauce a bien été supprimée'}))
+      .catch(err => res.status(400).json({ err }));
 });
 
 app.use((req,res) => {
