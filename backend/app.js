@@ -2,8 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-// import models
-const Sauce = require('./models/Sauce');
+const saucesRoute = require('./routes/sauce');
 
 const app = express();
 
@@ -25,48 +24,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-// Sauce Route
-
-app.use('/api/sauces', (req, res) => {
-    Sauce.find()
-    .then(sauces => res.status(200).json(sauces))
-    .catch(err => res.status(400).json({ err }));
-});
-
-app.get('/api/sauces/:id', (req, res) => {
-    Sauce.findOne({_id: req.params.id})
-    .then(sauce => res.status(200).json(sauce))
-    .catch(err => res.status(400).json({ err }));
-});
-
-app.post('/api/sauces', (req, res) => {
-    const sauceParsed = JSON.parse(req.body.sauce);
-    delete sauceParsed._id;
-    const sauce = new Sauce({
-        ...sauceParsed,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    });
-    sauce.save()
-    .then(() => res.status(201).json({ message: 'La Sauce a bien été ajoutée'}))
-    .catch(err => res.status(400).json({err}));
-});
-
-app.put('/api/sauces/:id', (req, res) => {
-    const sauceParsed = JSON.parse(req.body.sauce);
-
-    Sauce.updateOne({_id : req.params.id}, {...sauceParsed, _id: req.params.id})
-    .then(() => res.status(200).json({ message: 'La Sauce a bien été modifiée' }))
-    .catch(err => res.status(404).json({ err }));
-});
-
-app.delete('/api/stuff/:id', (req, res) => {
-    Sauce.deleteOne({ _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'La Sauce a bien été supprimée'}))
-      .catch(err => res.status(400).json({ err }));
-});
-
-app.use((req,res) => {
-    res.json({mesage : 'Votre requête a bien été reçue.'})
-});
+// Route
+app.use('api/sauces', saucesRoute);
 
 module.exports = app;
