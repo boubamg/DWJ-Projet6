@@ -10,7 +10,7 @@ const app = express();
 // Database Connection
 mongoose.connect(
     "mongodb+srv://boubamg9:Annete215@cluster0.i0ghu.mongodb.net/Cluster0?retryWrites=true&w=majority", 
-{ useUnifiedTopology: true, useNewUrlParser: true })
+{ useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
 .then(() => console.log("Connexion à mongoDB réussie"))
 .catch(() => console.log("Echec de connexion à mongoDB"));
 
