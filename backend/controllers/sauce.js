@@ -2,14 +2,10 @@ const Sauce = require("../models/Sauce");
 
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
-    delete sauceObject._id;   
+    delete sauceObject._id;
     const sauce = new Sauce({
         ...sauceObject,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
-        likes: 0,
-        dislikes: 0,
-        usersLiked: [],
-        usersDisliked: []
     });
     sauce.save()
     .then(() => res.status(201).json({ message: 'La Sauce a bien été ajoutée'}))
@@ -18,7 +14,8 @@ exports.createSauce = (req, res, next) => {
 
 exports.getAllSauce = (req, res) => {
     Sauce.find()
-    .then(sauces => res.status(200).json(sauces))
+    .then(sauces => {
+        res.status(200).json(sauces)})
     .catch(err => res.status(400).json({ err }));
 };
 
@@ -44,3 +41,33 @@ exports.deleteSauce = (req, res) => {
       .then(() => res.status(200).json({ message: 'La Sauce a bien été supprimée'}))
       .catch(err => res.status(400).json({ err }));
 };
+
+exports.likeSauce = (req, res) => {
+    switch (req.body.like) {
+
+        // dislike sauce
+        case -1 :
+
+            Sauce.updateOne({ _id: req.params.id }, {
+                $inc: { dislikes: 1 },
+                $push: { usersDisliked: req.body.userId },
+            })
+            .then(() => res.status(201).json({ message: 'Sauce was disliked' }) )
+            .catch(err => res.status(400).json({ err }) );
+
+            break;
+
+        // like sauce
+        case 1 :
+            
+            Sauce.updateOne({ _id: req.params.id }, {
+                $inc: { likes: 1 },
+                $push: { usersLiked: req.body.userId },
+            })
+            .then(() => res.status(201).json({ message: 'Sauce was liked' }) )
+            .catch(err =>  res.status(400).json({ err }) );
+
+            break;                
+    }
+}
+
