@@ -57,6 +57,40 @@ exports.likeSauce = (req, res) => {
 
             break;
 
+        // take off like or dislike
+        case 0 :
+
+            // find sauce
+            Sauce.findOne({ _id: req.params.id })
+            .then(sauce => {
+
+                let usersLiked = sauce.usersLiked;
+                let findLike = usersLiked.indexOf(req.body.userId)
+
+                // look at if user like that sauce
+                // if yes : 
+                if (findLike !== -1){
+                    Sauce.updateOne({ _id: req.params.id }, {
+                        $pull : { usersLiked : req.body.userId },
+                        $inc : { likes : -1 }
+                    });
+                    return res.status(201).json({ message : "Like has been taken off" })
+                }
+
+                let usersDisliked = sauce.usersDisliked;
+                let findDislike = usersDisliked.indexOf(req.body.userId); 
+
+                // look at if user dislike that sauce
+                // if yes :
+                if (findDislike !== -1){
+                    Sauce.updateOne({ _id: req.params.id }, {
+                        $pull : { usersDisliked : req.body.userId },
+                        $inc : { dislikes : -1 }
+                    });
+                    return res.status(201).json({ message : "Dislike has been taken off" });
+                }  
+            }).catch(err => res.status(400).json({ err }))
+
         // like sauce
         case 1 :
             
