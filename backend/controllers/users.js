@@ -4,17 +4,32 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 exports.signup = (req, res) => {
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
-        const user = new User({
-            email : req.body.email,
-            password : hash
-        });
-        user.save()
-            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch((err) => res.status(400).json({err}))
-    })
-    .catch(err => res.status(500).json({err}));
+    let email = req.body.email
+    let password = req.body.password
+    
+    let emailRegex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/
+
+    if (emailRegex.test(email)) {
+        if (password.length > 8) {
+
+            bcrypt.hash(password, 10)
+            .then(hash => {
+                const user = new User({
+                    email : email,
+                    password : hash
+                });
+                user.save()
+                    .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                    .catch((err) => res.status(400).json({err}))
+            })
+            .catch(err => res.status(500).json({err}));
+
+            } else {
+            return res.status(401).json({ message : "Le mot de passe doit contenir au moins 8 caractères"})
+        }
+    } else {
+        return res.status(400).json({ message : "Email incorrect"});
+    }
 }
 
 exports.login = (req, res) => {
