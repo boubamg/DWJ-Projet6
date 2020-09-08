@@ -1,3 +1,4 @@
+require('dotenv').config();
 const User = require("../models/User");
 const bcrypt = require('bcrypt');
 
@@ -47,7 +48,7 @@ exports.login = (req, res) => {
                 userId: user._id,
                 token: jwt.sign(
                     { userId: user._id },
-                    'yxf784**$$qlifeclefxx@secrete%%^**€€Bouba//maiga',
+                    process.env.TOKEN,
                     { expiresIn: '24h' })
             });
         })

@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -10,8 +11,8 @@ const app = express();
 
 // Database Connection
 mongoose.connect(
-    "mongodb+srv://boubamg9:Annete215@cluster0.i0ghu.mongodb.net/Cluster0?retryWrites=true&w=majority", 
-{ useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
+    process.env.MONGODBCONNECTION, 
+    { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true })
 .then(() => console.log("Connexion à mongoDB réussie"))
 .catch(() => console.log("Echec de connexion à mongoDB"));
 
