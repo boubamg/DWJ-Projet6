@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
+const helmet = require('helmet');
 
 const saucesRoute = require('./routes/sauce');
 const usersRoute = require("./routes/users");
@@ -16,6 +17,8 @@ mongoose.connect(
 .then(() => console.log("Connexion à mongoDB réussie"))
 .catch(() => console.log("Echec de connexion à mongoDB"));
 
+
+app.use(helmet());
 
 // Request authorization
 app.use((req, res, next) => {
