@@ -7,3 +7,7 @@ Pour faire fonctionner le projet, vous devez installer node-sass à part.
 ## Development server
 
 Démarrer `ng serve` pour avoir accès au serveur de développement. Rendez-vous sur `http://localhost:4200/`. L'application va se recharger automatiquement si vous modifiez un fichier source.
+
+### .env
+
+Penser à créer un fichier .env pour y déclarer les variable d'environnement 'TOKEN' (qui est la clef secrete du token) et 'MONGODBCONNECTION' qui est l'adresse de la base de donnée mongoDB
