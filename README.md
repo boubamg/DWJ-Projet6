@@ -10,4 +10,4 @@ Démarrer `ng serve` pour avoir accès au serveur de développement. Rendez-vous
 
 ### .env
 
-Penser à créer un fichier .env pour y déclarer les variable d'environnement 'TOKEN' (qui est la clef secrete du token) et 'MONGODBCONNECTION' qui est l'adresse de la base de donnée mongoDB
+Penser à créer un fichier .env pour y déclarer les variables d'environnements 'TOKEN' (qui est la clef secrete du token) et 'MONGODBCONNECTION' qui est l'adresse de la base de donnée mongoDB
